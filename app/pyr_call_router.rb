@@ -72,9 +72,11 @@ class PYRCallRouter < Sinatra::Base
 
   def send_text_with_office_info
     recipient = params['To']
-    TwilioClient.new.text recipient do
-      "#{@rep.official_full}\n#{@office.distance.round} miles away\n#{@office.address}\n"\
-        "#{[@office.city, @office.state, @office.zip].join(', ')}\n#{@office.phone}"
+    TwilioClient.new.text recipient do |sms|
+      sms.body "#{@rep.official_full}"
+      sms.body "#{@office.address}"
+      sms.body "#{@office.city}, #{@office.state} #{@office.zip}"
+      sms.body "#{@office.phone}"
     end
   end
 

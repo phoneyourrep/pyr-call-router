@@ -18,10 +18,12 @@ class TwilioClient
   end
 
   def text(recipient)
+    sms = TwilioSMS.new
+    yield sms
     account.messages.create(
       from: app_phone_number,
       to:   TwilioNumber.new(recipient).to_s,
-      body: yield.to_s
+      body: sms.to_s
     )
   end
 
