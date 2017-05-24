@@ -39,10 +39,10 @@ module Helpers
   def send_text_with_office_info
     recipient = params['To']
     TwilioClient.new.text recipient do |sms|
-      sms.body "#{@rep.official_full}"
-      sms.body "#{@office.address}"
+      sms.body @rep.official_full
+      sms.body @office.address
       sms.body "#{@office.city}, #{@office.state} #{@office.zip}"
-      sms.body "#{@office.phone}"
+      sms.body @office.phone
     end
   end
 
