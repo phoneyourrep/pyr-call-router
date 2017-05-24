@@ -41,6 +41,8 @@ When running this app locally you will need to make your server publicly availab
 APP_URL=https://example.ngrok.io bundle exec shotgun
 ```
 
+You can then text a valid 5-digit US zip code to your Twilio number to use the app.
+
 This app is ready to deploy to Heroku. Just don't forget to set your Heroku config vars as outlined above.
 
 # Contributing
