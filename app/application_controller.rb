@@ -16,20 +16,20 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/new-call' do
-    list_known_reps_and_gather_input
+    render_twiml list_known_reps_and_gather_input
   end
 
   get '/local-office' do
     set_rep_and_local_office
-    describe_local_office_and_gather_input
+    render_twiml describe_local_office_and_gather_input
   end
 
   get '/call-rep' do
     set_rep_and_local_office
     if params['Digits'] == '1'
-      place_call_to_local_office
+      render_twiml place_call_to_local_office
     else
-      describe_local_office_and_gather_input
+      render_twiml describe_local_office_and_gather_input
     end
   end
 
@@ -58,7 +58,7 @@ class ApplicationController < Sinatra::Base
 
   def list_known_reps_and_gather_input
     set_zip_and_reps
-    render_twiml Twilio::TwiML::Response.new do |r|
+    Twilio::TwiML::Response.new do |r|
       r.Say 'Hi, welcome to the Phone Your Rep call router.'
       r.Say "We found #{@reps.count} reps who might represent you."
       r.Gather numDigits: '1', action: query('/local-office', @zip, @reps), method: 'get' do |g|
@@ -70,7 +70,7 @@ class ApplicationController < Sinatra::Base
   end
 
   def describe_local_office_and_gather_input
-    render_twiml Twilio::TwiML::Response.new do |r|
+    Twilio::TwiML::Response.new do |r|
       r.Say "#{@rep.official_full} has an office about #{@office.distance.round} miles away at "\
         "#{[@office.address, @office.city, @office.state, @office.zip].join(', ')}."
       r.Say "The phone number for this office is #{@office.phone}."
@@ -81,7 +81,7 @@ class ApplicationController < Sinatra::Base
   end
 
   def place_call_to_local_office
-    render_twiml Twilio::TwiML::Response.new do |r|
+    Twilio::TwiML::Response.new do |r|
       r.Dial TwilioNumber.new(@office.phone).to_s
     end
   end
