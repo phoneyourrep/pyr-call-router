@@ -47,6 +47,8 @@ This app is ready to deploy to Heroku. Just don't forget to set your Heroku conf
 
 # Contributing
 
-Contributions are welcome! Fork the repo and make your changes on a feature branch, then submit a PR. Then run the tests with `bundle exec rake` (if there aren't any tests yet they'll be added soon).
+Contributions are welcome! Fork the repo and make your changes on a feature branch, then run the tests with `bundle exec rake` (if there aren't any tests yet they'll be added soon).
 
 Please add RSpec tests that cover all new code, or if you prefer writing tests in another framework, add the test suite to the default Rake task to make sure they're run.
+
+When all the tests pass and there are no new Rubocop issues, please submit a PR.
