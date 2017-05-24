@@ -11,12 +11,13 @@ module Helpers
   end
 
   def set_zip_and_reps
+    return unless params['zip']
     @zip  = params['zip']
     @reps = PYR.reps { |r| r.address = @zip }.objects
   end
 
   def set_rep_and_local_office
-    set_zip_and_reps
+    return unless params['ids']
     ids     = params['ids'].split('-')
     id      = ids.size > 1 ? ids[params['Digits'].to_i - 1] : ids.first
     @rep    = @reps.where(bioguide_id: id).first
@@ -24,7 +25,6 @@ module Helpers
   end
 
   def list_known_reps_and_gather_input
-    set_zip_and_reps
     Twilio::TwiML::Response.new do |r|
       r.Say 'Hi, welcome to the Phone Your Rep call router.'
       r.Say "We found #{@reps.count} reps who might represent you."

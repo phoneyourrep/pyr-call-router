@@ -13,6 +13,11 @@ class PYRCallRouter < Sinatra::Base
     include Helpers
   end
 
+  before do
+    set_zip_and_reps
+    set_rep_and_local_office
+  end
+
   get '/' do
     if params['From']
       TwilioClient.new.call(caller: params['From'], zip: params['Body'])
@@ -24,13 +29,11 @@ class PYRCallRouter < Sinatra::Base
   end
 
   get '/local-office' do
-    set_rep_and_local_office
     send_text_with_office_info
     render_twiml describe_local_office_and_gather_input
   end
 
   get '/call-rep' do
-    set_rep_and_local_office
     if params['Digits'] == '1'
       render_twiml place_call_to_local_office
     else
