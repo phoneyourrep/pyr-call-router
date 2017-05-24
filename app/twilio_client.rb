@@ -17,11 +17,11 @@ class TwilioClient
     )
   end
 
-  def text(to:, body:)
+  def text(recipient)
     account.messages.create(
       from: app_phone_number,
-      to:   to,
-      body: body
+      to:   TwilioNumber.new(recipient).to_s,
+      body: yield.to_s
     )
   end
 

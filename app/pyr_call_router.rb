@@ -21,6 +21,7 @@ class PYRCallRouter < Sinatra::Base
 
   get '/local-office' do
     set_rep_and_local_office
+    send_text_with_office_info
     render_twiml describe_local_office_and_gather_input
   end
 
@@ -66,6 +67,14 @@ class PYRCallRouter < Sinatra::Base
           g.Say "To call #{rep.role} #{rep.official_full}, press #{index + 1}."
         end
       end
+    end
+  end
+
+  def send_text_with_office_info
+    recipient = params['To']
+    TwilioClient.new.text recipient do
+      "#{@rep.official_full}\n#{@office.distance.round} miles away\n#{@office.address}\n"\
+        "#{[@office.city, @office.state, @office.zip].join(', ')}\n#{@office.phone}"
     end
   end
 
