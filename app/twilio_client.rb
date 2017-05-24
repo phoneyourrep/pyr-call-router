@@ -40,10 +40,10 @@ class TwilioClient
   end
 
   def url(zip)
-    "#{ENV['APP_URL']}/new-call?zip=#{zip}"
+    @_url ||= "#{ENV['APP_URL']}/new-call?zip=#{zip}"
   end
 
   def app_phone_number
-    '+16176525346'
+    @_app_phone_number ||= TwilioNumber.new(ENV['TWILIO_PHONE_NUMBER']).to_s
   end
 end
