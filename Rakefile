@@ -12,8 +12,8 @@ begin
   RuboCop::RakeTask.new
 
   task default: %i[spec rubocop]
-rescue LoadError
-  # no rspec available
+rescue LoadError => e
+  puts e
 end
 
 desc 'Open a pry console'

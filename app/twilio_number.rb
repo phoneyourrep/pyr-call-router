@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats a phone number for consumption by Twilio's API
 class TwilioNumber
   attr_reader :number
 

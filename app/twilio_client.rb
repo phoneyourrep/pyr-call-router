@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Wrapper for the Twilio REST client
 class TwilioClient
   attr_reader :caller
 
