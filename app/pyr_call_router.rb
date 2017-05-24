@@ -4,14 +4,9 @@ require './config/environment'
 
 # API endpoint for Twilio
 class PYRCallRouter < Sinatra::Base
-  not_found do
-    status 404
-    '404 not found'
-  end
+  not_found { '404 not found' }
 
-  helpers do
-    include Helpers
-  end
+  helpers Helpers
 
   before do
     set_zip_and_reps
