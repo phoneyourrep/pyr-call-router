@@ -7,11 +7,11 @@ class TwilioClient
     @_client ||= Twilio::REST::Client.new account_sid, auth_token
   end
 
-  def call(caller:, path:, zip: '')
+  def call(caller:, zip: '')
     client.account.calls.create(
       from:   app_phone_number,
       to:     TwilioNumber.new(caller).to_s,
-      url:    url(path, zip),
+      url:    url(zip),
       method: 'get'
     )
   end
@@ -38,8 +38,8 @@ class TwilioClient
     @_auth_token ||= ENV['TWILIO_AUTH_TOKEN']
   end
 
-  def url(path, zip)
-    "#{ENV['APP_URL']}#{path}?zip=#{zip}"
+  def url(zip)
+    "#{ENV['APP_URL']}/new-call?zip=#{zip}"
   end
 
   def app_phone_number
