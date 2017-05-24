@@ -1,4 +1,4 @@
-# pyr-twilio / Phone Your Rep Call Router
+# PYR Call Router
 A simple Sinatra app that serves as an interface between the [Phone Your Rep](https://github.com/phoneyourrep/phone-your-rep-api) and Twilio APIs.
 
 The call router receives a text message with a 5-digit zip code as the body and responds with a phone call offering to connect the user to the closest local office of each of their reps in Congress.

@@ -3,7 +3,7 @@
 require './config/environment'
 
 # API endpoint for Twilio
-class ApplicationController < Sinatra::Base
+class PYRCallRouter < Sinatra::Base
   not_found do
     status 404
     '404 not found'
