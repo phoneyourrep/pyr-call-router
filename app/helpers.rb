@@ -7,7 +7,7 @@ module Helpers
   end
 
   def query(path, zip, reps = [])
-    "#{path}?ids=#{reps.map(&:bioguide_id).join('-')}&zip=#{zip}"
+    "#{path}?ids=#{reps.map(&:bioguide_id).join('-')}&zip=#{zip.tr(' ', '+')}"
   end
 
   def set_zip_and_reps
