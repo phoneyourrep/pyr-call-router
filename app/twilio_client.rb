@@ -42,7 +42,7 @@ class TwilioClient
   end
 
   def url(zip)
-    @_url ||= "#{ENV['APP_URL']}/new-call?zip=#{zip.tr(' ', '+')}"
+    @_url ||= URI.encode "#{ENV['APP_URL']}/new-call?zip=#{zip}"
   end
 
   def app_phone_number
