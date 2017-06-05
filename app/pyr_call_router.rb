@@ -14,7 +14,7 @@ class PYRCallRouter < Sinatra::Base
   end
 
   get '/' do
-    if params['From']
+    if params['From'] && params['Body']
       TwilioClient.new.call(caller: params['From'], zip: params['Body'])
     end
   end
