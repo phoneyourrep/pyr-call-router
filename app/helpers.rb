@@ -11,8 +11,8 @@ module Helpers
   end
 
   def set_zip_and_reps
-    return unless params['zip']
     @zip  = params['zip']
+    @zip  = params['Digits'] unless @zip
     @reps = PYR.reps { |r| r.address = @zip }.objects
   end
 
@@ -27,12 +27,25 @@ module Helpers
   def list_known_reps_and_gather_input
     Twilio::TwiML::Response.new do |r|
       r.Say 'Hi, welcome to the Phone Your Rep call router.'
-      r.Say "We found #{@reps.count} reps who might represent you."
-      r.Gather numDigits: '1', action: query('/local-office', @zip, @reps), method: 'get' do |g|
-        @reps.each_with_index do |rep, index|
-          g.Say "To call #{rep.role} #{rep.official_full}, press #{index + 1}."
-        end
+      @reps.count.positive? ? run_through_list_of_reps(r) : regather_zip_code_input(r)
+    end
+  end
+
+  def run_through_list_of_reps(twiml_response)
+    r = twiml_response
+    r.Say "We found #{@reps.count} reps who might represent you."
+    r.Gather numDigits: '1', action: query('/local-office', @zip, @reps), method: 'get' do |g|
+      @reps.each_with_index do |rep, index|
+        g.Say "To call #{rep.role} #{rep.official_full}, press #{index + 1}."
       end
+    end
+  end
+
+  def regather_zip_code_input(twiml_response)
+    r = twiml_response
+    r.Say 'We had trouble finding your reps with the input you gave us.'
+    r.Gather numDigits: '5', action: '/new-call', method: 'get' do |g|
+      g.Say 'Please try entering your 5 digit zip code again.'
     end
   end
 
