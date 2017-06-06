@@ -11,8 +11,7 @@ module Helpers
   end
 
   def set_zip_and_reps
-    @zip  = params['zip']
-    @zip  = params['Digits'] unless @zip
+    @zip  = params['zip'] || params['Digits']
     @reps = PYR.reps { |r| r.address = @zip }.objects
   end
 
@@ -34,7 +33,7 @@ module Helpers
   def run_through_list_of_reps(twiml_response)
     r = twiml_response
     r.Say "We found #{@reps.count} reps who might represent you."
-    r.Gather numDigits: '1', action: query('/local-office', @zip, @reps), method: 'get' do |g|
+    r.Gather gather_options('1', query('/local-office', @zip, @reps), 'get') do |g|
       @reps.each_with_index do |rep, index|
         g.Say "To call #{rep.role} #{rep.official_full}, press #{index + 1}."
       end
@@ -44,7 +43,7 @@ module Helpers
   def regather_zip_code_input(twiml_response)
     r = twiml_response
     r.Say 'We had trouble finding your reps with the input you gave us.'
-    r.Gather numDigits: '5', action: '/regather-zip', method: 'get' do |g|
+    r.Gather gather_options('5', '/regather-zip', 'get') do |g|
       g.Say 'Please try entering your 5 digit zip code again.'
     end
   end
@@ -64,7 +63,7 @@ module Helpers
       r.Say "#{@rep.official_full} has an office about #{@office.distance.round} miles away at "\
         "#{[@office.address, @office.city, @office.state, @office.zip].join(', ')}."
       r.Say "The phone number for this office is #{@office.phone}."
-      r.Gather numDigits: '1', action: query('/call-rep', @zip, [@rep]), method: 'get' do |g|
+      r.Gather gather_options('1', query('/call-rep', @zip, [@rep]), 'get') do |g|
         g.Say 'Press 1 to call this office. Press any other key to hear this again.'
       end
     end
@@ -74,5 +73,14 @@ module Helpers
     Twilio::TwiML::Response.new do |r|
       r.Dial TwilioNumber.new(@office.phone).to_s
     end
+  end
+
+  def gather_options(num_digits, action, method)
+    {
+      numDigits: num_digits,
+      action:    action,
+      method:    method,
+      timeout:   '10'
+    }
   end
 end
