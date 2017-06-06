@@ -23,7 +23,7 @@ class PYRCallRouter < Sinatra::Base
     render_twiml list_known_reps_and_gather_input
   end
 
-  get 'regather-zip' do
+  get '/regather-zip' do
     render_twiml list_known_reps_and_gather_input(new_call: false)
   end
 
