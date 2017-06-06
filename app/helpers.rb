@@ -26,7 +26,7 @@ module Helpers
 
   def list_known_reps_and_gather_input(new_call: true)
     Twilio::TwiML::Response.new do |r|
-      r.Say('Hi, welcome to the Phone Your Rep call router.') if new_call
+      r.Say 'Hi, welcome to the Phone Your Rep call router.' if new_call
       @reps.count.positive? ? run_through_list_of_reps(r) : regather_zip_code_input(r)
     end
   end

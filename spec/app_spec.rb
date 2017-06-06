@@ -44,4 +44,27 @@ describe 'The app' do
       )
     end
   end
+
+  context '/regather-zip' do
+    it 'returns 200 OK and asks for resubmission without a zip code' do
+      get '/regather-zip'
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include(
+        '<Say>We had trouble finding your reps with the input you gave us.</Say>'
+      )
+      expect(last_response.body).to include(
+        '<Say>Please try entering your 5 digit zip code again.</Say>'
+      )
+    end
+
+    it 'returns 200 OK and a list of reps with a zip code as the Digits param' do
+      get '/regather-zip?Digits=05843'
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include(
+        '<Say>We found 3 reps who might represent you.</Say>'
+      )
+    end
+  end
 end
