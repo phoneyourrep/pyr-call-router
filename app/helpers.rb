@@ -24,9 +24,9 @@ module Helpers
     @office = @rep.office_locations.first
   end
 
-  def list_known_reps_and_gather_input
+  def list_known_reps_and_gather_input(new_call: true)
     Twilio::TwiML::Response.new do |r|
-      r.Say 'Hi, welcome to the Phone Your Rep call router.'
+      r.Say 'Hi, welcome to the Phone Your Rep call router.' if new_call
       @reps.count.positive? ? run_through_list_of_reps(r) : regather_zip_code_input(r)
     end
   end
@@ -44,7 +44,7 @@ module Helpers
   def regather_zip_code_input(twiml_response)
     r = twiml_response
     r.Say 'We had trouble finding your reps with the input you gave us.'
-    r.Gather numDigits: '5', action: '/new-call', method: 'get' do |g|
+    r.Gather numDigits: '5', action: '/regather-zip', method: 'get' do |g|
       g.Say 'Please try entering your 5 digit zip code again.'
     end
   end

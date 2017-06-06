@@ -23,6 +23,10 @@ class PYRCallRouter < Sinatra::Base
     render_twiml list_known_reps_and_gather_input
   end
 
+  get 'regather-zip' do
+    render_twiml list_known_reps_and_gather_input(new_call: false)
+  end
+
   get '/local-office' do
     send_text_with_office_info
     render_twiml describe_local_office_and_gather_input
