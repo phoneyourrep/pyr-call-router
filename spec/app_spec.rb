@@ -30,8 +30,8 @@ describe 'The app' do
       get '/new-call?zip=05843'
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include(
-        '<Say>We found 3 reps who might represent you.</Say>'
+      expect(last_response.body).to match(
+        %r{<Say>We found (\d+) reps who might represent you\.</Say>}
       )
     end
 
@@ -39,8 +39,8 @@ describe 'The app' do
       get '/new-call?Digits=05843'
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include(
-        '<Say>We found 3 reps who might represent you.</Say>'
+      expect(last_response.body).to match(
+        %r{<Say>We found (\d+) reps who might represent you\.</Say>}
       )
     end
   end
@@ -62,8 +62,8 @@ describe 'The app' do
       get '/regather-zip?Digits=05843'
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include(
-        '<Say>We found 3 reps who might represent you.</Say>'
+      expect(last_response.body).to match(
+        %r{<Say>We found (\d+) reps who might represent you\.</Say>}
       )
     end
   end
